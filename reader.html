@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html style="margin:0px; padding:0px; height:100%; width:100%;">
+<head>
+   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+   <title>EPUBReader</title>
+   <link rel="icon" href="skin/icon_32.png" type="image/png">
+   <script src="js/core.js" type="text/javascript"></script>
+   <script src="js/reader.js" type="text/javascript"></script>
+   <script src="js/app.js" type="text/javascript"></script>
+   <script src="js/api.js" type="text/javascript"></script>
+   <script src="js/md5/core.js" type="text/javascript"></script>
+   <script src="js/md5/md5.js" type="text/javascript"></script>
+   <script src="js/zip/zip.js" type="text/javascript"></script>
+   <style type="text/css">
+   .toolbar
+   {
+      margin-left:10px;
+      margin-right:10px;
+      border:1px solid white;
+      width:48px;
+      height:48px;
+      background-position:center center;
+   }
+
+   .toolbar:hover
+   {
+      cursor:pointer;
+   }
+
+   .toolbar:active
+   {
+      background-color:white;
+   }
+
+   .button
+   {
+      border:1px solid grey;
+      border-radius:10px;
+      padding:5px 10px 5px 10px;
+      background-color:#f0f0f0;
+   }
+
+   .button:hover
+   {
+      cursor:pointer;
+   }
+
+   #open
+   {
+      background-image:url('skin/open.png');
+      background-repeat:no-repeat;
+      width:64px;
+      height:64px;
+      padding:5px;
+   }
+
+   #donate
+   {
+      background-image:url('skin/like.png');
+      background-repeat:no-repeat;
+   }
+
+   #faq
+   {
+      background-image:url('skin/faq.png');
+      background-repeat:no-repeat;
+   }
+
+   #preferences
+   {
+      background-image:url('skin/preferences.png');
+      background-repeat:no-repeat;
+   }
+
+   #toc
+   {
+      background-image:url('skin/toc.png');
+      background-repeat:no-repeat;
+   }
+
+   #bookmark
+   {
+      background-image:url('skin/bookmark.png');
+      background-repeat:no-repeat;
+   }
+
+   #font_less
+   {
+      background-image:url('skin/font_size_less.png');
+      background-repeat:no-repeat;
+   }
+
+   #font_more
+   {
+      background-image:url('skin/font_size_more.png');
+      background-repeat:no-repeat;
+   }
+
+   #reading_style
+   {
+      background-image:url('skin/reading_style.png');
+      background-repeat:no-repeat;
+   }
+
+   #download
+   {
+      background-image:url('skin/download.png');
+      background-repeat:no-repeat;
+   }
+
+   #nav_inner_page_backwards
+   {
+      background-image:url('skin/nav_page_backwards_disabled.png');
+      background-repeat:no-repeat;
+      opacity:0.5;
+   }
+
+   #nav_inner_page_forwards
+   {
+      background-image:url('skin/nav_page_forwards_disabled.png');
+      background-repeat:no-repeat;
+      opacity:0.5;
+   }
+
+   .childLevel
+   {
+      font-size:80%;
+   }
+
+   .navPoint:hover
+   {
+      cursor:pointer;
+   }
+
+   .navPoint:active
+   {
+      background-color: grey;
+   }
+
+   .select:active
+   {
+      background-color: grey;
+   }
+
+   #message_content_okay
+   {
+      border:1px solid white;
+      margin:0px auto;
+      margin-top:10px;
+      padding:5px;
+      width:30px;
+      text-align:center;
+   }
+
+   #message_content_okay:hover
+   {
+      cursor:pointer;
+   }
+
+   @-webkit-keyframes spin
+   {
+      from{ -webkit-transform:rotate(0turn)}
+      to{-webkit-transform:rotate(1turn)}
+   }
+
+   @-moz-keyframes spin
+   {
+      from{ -moz-transform:rotate(0turn)}
+      to{-moz-transform:rotate(1turn)}
+   }
+
+   @keyframes spin
+   {
+      from{ transform:rotate(0turn)}
+      to{transform:rotate(1turn)}
+   }
+
+   #loading
+   {
+      position:absolute;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      margin:auto;
+      display:block;
+      width:32px;
+      height:32px;
+      -webkit-border-radius:20px;
+      -moz-border-radius:20px;
+      -ms-border-radius:20px;
+      -o-border-radius:20px;
+      border-radius:20px;
+      border:4px solid #666;
+      border-color:#666 transparent;
+      background-color:transparent;
+      -webkit-animation:spin 1s linear infinite;
+      -moz-animation:spin 1s linear infinite;
+      -ms-animation:spin 1s linear infinite;
+      animation:spin 1s linear infinite;
+   }
+
+   #downloading
+   {
+      position:absolute;
+      top:50%;
+      left:50%;
+      margin-top:40px;
+      transform: translateX(-50%);
+      font-family:arial;
+      font-size:15pt;
+   }
+
+   #downloading_progress
+   {
+      position:absolute;
+      top:50%;
+      left:50%;
+      margin-top:70px;
+      margin-left:-95px;
+   }
+
+   #pageNumber{
+      position: absolute;
+      right:80px;
+   }
+   </style>
+</head>
+
+<body style="height:100%; width:100%; padding:0px; margin:0px;">
+   <div><p id="pageNumber"></p></div>
+<div id="browser" style="height:100%; width:100%;">
+   <div id="browse" style="position:absolute; top:0px; z-index:101; padding-top:15px; padding-bottom:15px; width:100%; background-color:grey;">
+      <input id="browse-files" type="file" style="display:none">
+      <div id="open" class="toolbar" style="margin:0px auto;"></div>
+   </div>
+   <table style="height:100%; width:100%;" cellspacing="0px" cellpadding="0px">
+   <tr id="toolbar_teaser_top" style="height:0px; display:none;"><td style="background: grey url('skin/toolbar_teaser_top.png') no-repeat center;"></td></tr>
+   <tr>
+      <td>
+         <div style="height:100%; position:relative;">
+            <iframe id="nav_frame" style="position:fixed; top:0px; height:100%; width:100%; z-index:200; overflow:auto; background-color:white; border:0px; display:none;"></iframe>
+            <iframe id="pref_frame" style="position:fixed; top:0px; height:100%; width:100%; z-index:200; overflow:auto; background-color:white; border:0px; display:none;"></iframe>
+            <div id="select_frame" style="position:fixed; top:0px; height:100%; width:100%; z-index:200; overflow:auto; background-color:white; display:none;"></div>
+            <iframe id="content_frame" style="position:fixed; top:6px; margin:0px; padding:0px; height:100%; width:100%; z-index:100; overflow:auto; vertical-align:top; border:0px;"></iframe>
+            <div id="nav_inner_page_backwards" style="position:absolute; top:50%; left:0px; z-index:-1; width:17px; height:25px; display:none;"></div>
+            <div id="nav_inner_page_forwards" style="position:absolute; top:50%; z-index:-1; width:17px; height:25px; align:right; display:none;"></div>
+            <div id="message_content" style="position:absolute; left:0; right:0; top:50%; margin:auto; z-index:-1; font-family:arial; font-size:13pt; max-width:250px; padding:15px; background-color:transparent;"></div>
+            <div id="loading" style="display:none;"></div>
+            <div id="downloading" style="display:none;"></div>
+            <table id="downloading_progress" style="display:none; width:200px;" cellpadding="0px" cellspacing="0px">
+            <tr>
+               <td id="downloading_progress_meter" style="width:0%;"><div style="z-index:101; vertical-align:bottom; height:6px; background-color:black; opacity:0.20;"></div></td>
+               <td><div style="z-index:101; height:5px; border:1px solid #f0f0f0; border-top-color:-moz-Dialog;"></div></td>
+            </tr>
+            </table>
+         </div>
+      </td>
+   </tr>
+   <tr id="toolbar_teaser_bottom" style="height:0px; display:none;"><td style="background: grey url('skin/toolbar_teaser_bottom.png') no-repeat center;"></td></tr>
+   <tr id="progress_div" style="height:6px;display:none;">
+      <td>
+         <table style="width:100%;" cellpadding="0px" cellspacing="0px">
+         <tr>
+            <td id="progress_meter"><div style="z-index:101; vertical-align:bottom; height:6px; background-color:black; opacity:0.20;"></div></td>
+            <td><div style="z-index:101; height:5px; border-top-width:1px; border-top-style:solid; border-top-color:#f0f0f0; border-top-color:-moz-Dialog;"></div></td>
+         </tr>
+         </table>
+      </td>
+   </tr>
+   </table>
+   <table id="toolbar" style="background-color:grey; display:none; position:absolute; z-index:101; width:100%;" cellpadding="0px" cellspacing="0px">
+   <tr>
+      <td>
+         <table style="width:100%; height:100%;" cellpadding="0px" cellspacing="0px">
+         <tr>
+            <td style="text-align:center;">
+               <table style="width:100%; height:100%;" cellpadding="0px" cellspacing="0px">
+               <tr>
+                  <td style="width:30%;">
+                     <div id="donate" class="toolbar" style="display:inline-block;"><a href="https://www.epubread.com/donate.php" target="_blank" style="outline:none; display:block; height:100%;"></a></div>
+                     <div id="faq" class="toolbar" style="display:inline-block;"><a id="help" href="https://www.epubread.com/faq.php?webext=1" target="_blank" style="outline:none; display:block; height:100%;"></a></div>
+                     <div id="preferences" class="toolbar" style="margin-top:4px; outline:none; display:inline-block;"></div>
+                  </td>
+                  <td style="height:100%;">
+                     <div id="toc" class="toolbar" style="margin-top:4px; outline:none; display:inline-block;"></div>
+                     <div id="bookmark" class="toolbar" style="display:inline-block;"></div>
+                     <div id="font_less" class="toolbar" style="display:inline-block;"></div>
+                     <div id="font_more" class="toolbar" style="display:inline-block;"></div>
+                     <div id="reading_style" class="toolbar" style="display:inline-block;"></div>
+                     <div id="download" class="toolbar" style="display:inline-block;"></div>
+                  </td>
+                  <td style="width:20%;">
+                  </td>
+               </tr>
+            </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+   </tr>
+   </table>
+</div>
+<div id="videos"></div>
+</body>
+</html>
